@@ -1,5 +1,5 @@
 import { keywords, addop, mulop, relop, logicalAnd, logicalOr, logicalNot, assign, delimiters, whitespace } from './tokens.js';
-import { isLetter, isDigit, isInArray } from './utils.js';
+import { isLetter, isInArray } from './utils.js';
 
 // Kiểm tra xem từ có phải là từ khóa không (được định nghĩa ở nơi khác)
 const isKeyword = (word) => isInArray(word, keywords);
@@ -46,9 +46,6 @@ const isNumber = (word) => {
     return true;
 };
 
-
-
-
 // Kiểm tra có phải là toán tử cộng/trừ không
 const isAddop = (token) => isInArray(token, addop);
 
@@ -56,7 +53,52 @@ const isAddop = (token) => isInArray(token, addop);
 const isMulop = (token) => isInArray(token, mulop);
 
 // Kiểm tra có phải là toán tử quan hệ không
-const isRelop = (token) => isInArray(token, relop);
+const isRelop = (token) => {
+    let state = 'S0'; // Trạng thái bắt đầu
+
+    for (let char of token) {
+        switch (state) {
+            case 'S0':
+                if (char === '<') {
+                    state = 'S2'; // Nhận ký tự '<'
+                } else if (char === '>') {
+                    state = 'S1'; // Nhận ký tự '>'
+                } else if (char === '=') {
+                    state = 'S3'; // Nhận ký tự '='
+                } else if (char === '!') {
+                    state = 'S4'; // Nhận ký tự '!'
+                } else {
+                    return false; // Không phải toán tử quan hệ
+                }
+                break;
+            case 'S1':
+                return token.length === 1; // Chấp nhận '>'
+            case 'S2':
+                if (char === '=') {
+                    return token.length === 2; // Chấp nhận '<='
+                } else {
+                    return token.length === 1; // Chấp nhận '<'
+                }
+            case 'S3':
+                if (char === '=') {
+                    return token.length === 2; // Chấp nhận '=='
+                } else {
+                    return false; // Không hợp lệ nếu không có '=' sau '!'
+                }
+            case 'S4':
+                if (char === '=') {
+                    return token.length === 2; // Chấp nhận '!='
+                } else {
+                    return false; // Không hợp lệ nếu không có '=' sau '!'
+                }
+            default:
+                return false; // Trạng thái không hợp lệ
+        }
+    }
+
+    // Kiểm tra nếu đã kết thúc ở trạng thái chấp nhận
+    return ['S1', 'S2', 'S3', 'S4'].includes(state);
+};
 
 // Kiểm tra có phải là toán tử logic AND không
 const isLogicalAnd = (token) => token === logicalAnd;
@@ -87,9 +129,9 @@ const classifyToken = (token) => {
     if (isLogicalAnd(token)) return { type: 'logicalAnd', value: token };     // Toán tử logic AND
     if (isLogicalOr(token)) return { type: 'logicalOr', value: token };       // Toán tử logic OR
     if (isLogicalNot(token)) return { type: 'logicalNot', value: token };     // Toán tử logic NOT
-    if (isAssign(token)) return { type: 'assign', value: token };         // Toán tử gán
-    if (isDelimiter(token)) return { type: 'delimiter', value: token };       // Dấu phân cách
-    if (isWhitespace(token)) return { type: 'whitespace', value: token };     // Khoảng trắng
+    if (isAssign(token)) return { type: 'assign', value: token };              // Toán tử gán
+    if (isDelimiter(token)) return { type: 'delimiter', value: token };        // Dấu phân cách
+    if (isWhitespace(token)) return { type: 'whitespace', value: token };      // Khoảng trắng
     return { type: 'error', value: token };  // Token không xác định
 };
 

@@ -1,3 +1,4 @@
+//lexer.js
 import {
     classifyToken,    // Hàm phân loại token dựa trên loại của nó
     isDelimiter,      // Kiểm tra xem ký tự có phải là dấu phân cách không
@@ -8,7 +9,7 @@ import {
     isLogicalAnd,     // Kiểm tra xem ký tự có phải là toán tử logic AND không
     isLogicalOr,      // Kiểm tra xem ký tự có phải là toán tử logic OR không
     isLogicalNot,     // Kiểm tra xem ký tự có phải là toán tử logic NOT không
-    isNumber          // Kiểm tra xem ký tự có phải là số không
+    isNumber          // Kiểm tra xem ký tự có phải là số không (bao gồm cả số khoa học)
 } from './dfa.js';
 
 // Hàm phân tách mã nguồn thành các token
