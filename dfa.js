@@ -22,6 +22,9 @@ const isNumber = (word) => {
     let dotFound = false;  // Kiểm tra dấu chấm thập phân
     let eFound = false;    // Kiểm tra ký hiệu 'e' cho ký hiệu khoa học
 
+    // Hàm kiểm tra ký tự có phải là số không
+    const isDigit = (char) => char >= '0' && char <= '9';
+
     for (let i = 0; i < word.length; i++) {
         if (word[i] === '.') {
             if (dotFound) return false;  // Chỉ cho phép một dấu chấm thập phân
@@ -42,6 +45,8 @@ const isNumber = (word) => {
     }
     return true;
 };
+
+
 
 
 // Kiểm tra có phải là toán tử cộng/trừ không
