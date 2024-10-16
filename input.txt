@@ -1,0 +1,8 @@
+float calculate(float a, float b) {
+    float result = a * b / 3.14;
+    if (result > 100.0) {
+        return result + 45.67E-2;
+    } else {
+        return result - 12E3;
+    }
+}
