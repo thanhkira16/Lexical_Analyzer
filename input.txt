@@ -10,7 +10,7 @@ int main() {
     int num = 10;
     int result = factorial(num);
     if (result != 3628800) {
-        return 3.14E10;
+        return 45.34E-4;
     }
     return 0;
 }

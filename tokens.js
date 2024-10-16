@@ -12,7 +12,7 @@ const logicalAnd = '&&';
 const logicalOr = '||';
 const logicalNot = '!';
 const delimiters = ['(', ')', '{', '}', ';', ',']; 
-const whitespace = [' ', '\t', '\n', '\r'];
+const whitespace = [' ', '\t', '\n'];
 
 export {
     keywords,

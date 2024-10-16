@@ -1,4 +1,4 @@
-import { 
+import {
     classifyToken,    // Hàm phân loại token dựa trên loại của nó
     isDelimiter,      // Kiểm tra xem ký tự có phải là dấu phân cách không
     isWhitespace,     // Kiểm tra xem ký tự có phải là khoảng trắng không
@@ -7,7 +7,8 @@ import {
     isRelop,          // Kiểm tra xem ký tự có phải là toán tử quan hệ không
     isLogicalAnd,     // Kiểm tra xem ký tự có phải là toán tử logic AND không
     isLogicalOr,      // Kiểm tra xem ký tự có phải là toán tử logic OR không
-    isLogicalNot      // Kiểm tra xem ký tự có phải là toán tử logic NOT không
+    isLogicalNot,     // Kiểm tra xem ký tự có phải là toán tử logic NOT không
+    isNumber          // Kiểm tra xem ký tự có phải là số không
 } from './dfa.js';
 
 // Hàm phân tách mã nguồn thành các token
@@ -30,27 +31,27 @@ const tokenize = (code) => {
         if (isWhitespace(char)) {
             addToken(currentToken); // Thêm token hiện tại vào mảng
             currentToken = '';      // Đặt lại token hiện tại
-        } 
+        }
         // Kiểm tra nếu ký tự là dấu phân cách
         else if (isDelimiter(char)) {
             addToken(currentToken);  // Thêm token hiện tại
             tokens.push(classifyToken(char)); // Thêm dấu phân cách làm token
             currentToken = '';       // Đặt lại token hiện tại
-        } 
+        }
         // Kiểm tra nếu ký tự là toán tử cộng/trừ
         else if (isAddop(char)) {
             addToken(currentToken);  // Thêm token hiện tại
             currentToken = char;     // Gán toán tử cộng/trừ làm token mới
             addToken(currentToken);  // Thêm vào mảng
             currentToken = '';       // Đặt lại token hiện tại
-        } 
+        }
         // Kiểm tra nếu ký tự là toán tử nhân/chia
         else if (isMulop(char)) {
             addToken(currentToken);  // Thêm token hiện tại
             currentToken = char;     // Gán toán tử nhân/chia làm token mới
             addToken(currentToken);  // Thêm vào mảng
             currentToken = '';       // Đặt lại token hiện tại
-        } 
+        }
         // Kiểm tra nếu ký tự là toán tử quan hệ
         else if (isRelop(char)) {
             addToken(currentToken);  // Thêm token hiện tại
@@ -63,7 +64,7 @@ const tokenize = (code) => {
             }
             addToken(currentToken);  // Thêm vào mảng
             currentToken = '';       // Đặt lại token hiện tại
-        } 
+        }
         // Kiểm tra nếu ký tự là toán tử logic AND
         else if (isLogicalAnd(char)) {
             addToken(currentToken);  // Thêm token hiện tại
@@ -75,7 +76,7 @@ const tokenize = (code) => {
             }
             addToken(currentToken);  // Thêm vào mảng
             currentToken = '';       // Đặt lại token hiện tại
-        } 
+        }
         // Kiểm tra nếu ký tự là toán tử logic OR
         else if (isLogicalOr(char)) {
             addToken(currentToken);  // Thêm token hiện tại
@@ -87,7 +88,7 @@ const tokenize = (code) => {
             }
             addToken(currentToken);  // Thêm vào mảng
             currentToken = '';       // Đặt lại token hiện tại
-        } 
+        }
         // Kiểm tra nếu ký tự là toán tử logic NOT
         else if (isLogicalNot(char)) {
             const nextChar = code[i + 1]; // Lấy ký tự tiếp theo
@@ -104,10 +105,21 @@ const tokenize = (code) => {
                 addToken(currentToken);  // Thêm vào mảng
                 currentToken = '';       // Đặt lại token hiện tại
             }
-        } 
-        // Nếu không thuộc loại nào ở trên, tiếp tục ghép ký tự thành token
+        }
+        // Nếu ký tự là số hoặc thuộc dạng số khoa học
         else {
-            currentToken += char;  // Thêm ký tự vào token hiện tại
+            currentToken += char;  // Ghép các ký tự liên tiếp thành token
+            const nextChar = code[i + 1]; // Ký tự tiếp theo
+
+            // Nếu đã hết chuỗi hoặc ký tự tiếp theo không phải là một phần của số
+            if (!nextChar || isDelimiter(nextChar) || isWhitespace(nextChar)) {
+                if (isNumber(currentToken)) {  // Kiểm tra nếu token là số hợp lệ
+                    addToken(currentToken);   // Thêm token là số hợp lệ vào mảng
+                } else {
+                    addToken(currentToken);  // Xử lý như token thông thường
+                }
+                currentToken = ''; // Đặt lại token hiện tại
+            }
         }
     }
 

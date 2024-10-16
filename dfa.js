@@ -21,6 +21,7 @@ const isNumber = (word) => {
     if (word.length === 0) return false; // Chuỗi rỗng không phải là số hợp lệ
     let dotFound = false;  // Kiểm tra dấu chấm thập phân
     let eFound = false;    // Kiểm tra ký hiệu 'e' cho ký hiệu khoa học
+
     for (let i = 0; i < word.length; i++) {
         if (word[i] === '.') {
             if (dotFound) return false;  // Chỉ cho phép một dấu chấm thập phân
@@ -30,7 +31,10 @@ const isNumber = (word) => {
             eFound = true;
             // Xử lý dấu cộng hoặc trừ sau ký hiệu 'e' trong ký hiệu khoa học
             if (i + 1 < word.length && (word[i + 1] === '+' || word[i + 1] === '-')) {
-                i++;
+                i++; // Bỏ qua dấu '+' hoặc '-' ngay sau 'e'
+                if (i + 1 < word.length && !isDigit(word[i + 1])) {
+                    return false; // Nếu không có chữ số sau dấu '+' hoặc '-', không phải là số hợp lệ
+                }
             }
         } else if (!isDigit(word[i])) {
             return false;  // Nếu không phải là chữ số thì không phải là số hợp lệ
@@ -38,6 +42,7 @@ const isNumber = (word) => {
     }
     return true;
 };
+
 
 // Kiểm tra có phải là toán tử cộng/trừ không
 const isAddop = (token) => isInArray(token, addop);
