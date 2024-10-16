@@ -1,13 +1,12 @@
-// lexer.js
 import { classifyToken } from './dfa.js';
-import { delimiters } from './tokens.js';
+import { isDelimiter, isWhitespace, isOperator } from './dfa.js';
 
 const tokenize = (code) => {
     let tokens = [];
     let currentToken = '';
 
     const addToken = (token) => {
-        if (token.trim() !== '') {
+        if (token.length > 0 && !isWhitespace(token)) {
             tokens.push(classifyToken(token));
         }
     };
@@ -15,18 +14,22 @@ const tokenize = (code) => {
     for (let i = 0; i < code.length; i++) {
         const char = code[i];
 
-        if (/\s/.test(char)) {
+        if (isWhitespace(char)) {
             addToken(currentToken);
             currentToken = '';
-        } else if (delimiters.includes(char)) {
+        } else if (isDelimiter(char)) {
             addToken(currentToken);
             tokens.push(classifyToken(char));
             currentToken = '';
-        } else if (/[\+\-\*\/=<>!]/.test(char)) {
+        } else if (isOperator(char)) {
             addToken(currentToken);
             currentToken = char;
             const nextChar = code[i + 1];
-            if (nextChar && (nextChar === '=' || (char === '&' && nextChar === '&') || (char === '|' && nextChar === '|'))) {
+            // Kiểm tra toán tử kép như "==", "&&", "||"
+            if (nextChar && isOperator(nextChar) && 
+                ((char === '=' && nextChar === '=') || 
+                 (char === '&' && nextChar === '&') || 
+                 (char === '|' && nextChar === '|'))) {
                 currentToken += nextChar;
                 i++;
             }

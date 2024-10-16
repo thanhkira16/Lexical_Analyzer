@@ -1,6 +1,8 @@
 // tokens.js
 
-const keywords = ['void', 'int', 'for', 'while', 'if', 'else', 'return', 'break', 'continue', 'float'];
+const keywords = [
+    'void', 'int', 'for', 'while', 'if', 'else', 'return', 'break', 'continue', 'float'
+];
 
 const operators = ['+', '-', '=', '==', '<', '>', '<=', '>=', '!='];
 const addop = ['+', '-'];
@@ -10,6 +12,7 @@ const logicalAnd = '&&';
 const logicalOr = '||';
 const logicalNot = '!';
 const delimiters = ['(', ')', '{', '}', ';'];
+const whitespace = [' ', '\t', '\n', '\r'];
 
 export {
     keywords,
@@ -21,4 +24,5 @@ export {
     logicalOr,
     logicalNot,
     delimiters,
+    whitespace,
 };
