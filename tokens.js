@@ -11,7 +11,7 @@ const relop = ['<', '>', '<=', '>=', '==', '!='];
 const logicalAnd = '&&';
 const logicalOr = '||';
 const logicalNot = '!';
-const delimiters = ['(', ')', '{', '}', ';'];
+const delimiters = ['(', ')', '{', '}', ';', ',']; 
 const whitespace = [' ', '\t', '\n', '\r'];
 
 export {

@@ -1,8 +1,16 @@
-float calculate(float a, float b) {
-    float result = a * b / 3.14;
-    if (result > 100.0) {
-        return result + 45.67E-2;
+void process(int x, float y) {
+    int result = x + 5;
+    float average = y / 2.0;
+    if (result == 10 || x != 20) {
+        result = result * 2;
+        while (result <= 50 && result >= 0) {
+            result = result - 1;
+        }
+        return;
     } else {
-        return result - 12E3;
+        if (!x || y >= 45.67E-2) {
+            break;
+        }
+        continue;
     }
 }
