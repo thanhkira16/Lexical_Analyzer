@@ -1,16 +1,16 @@
-void process(int x, float y) {
-    int result = x + 5;
-    float average = y / 2.0;
-    if (result == 10 || x != 20) {
-        result = result * 2;
-        while (result <= 50 && result >= 0) {
-            result = result - 1;
-        }
-        return;
+int factorial(int n) {
+    if (n == 0) {
+        return 1;
     } else {
-        if (!x || y >= 45.67E-2) {
-            break;
-        }
-        continue;
+        return n * factorial(n - 1);
     }
+}
+
+int main() {
+    int num = 10;
+    int result = factorial(num);
+    if (result != 3628800) {
+        return 3.14E10;
+    }
+    return 0;
 }

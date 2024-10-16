@@ -1,4 +1,4 @@
-import { keywords, addop, mulop, relop, logicalAnd, logicalOr, logicalNot, operators, delimiters, whitespace } from './tokens.js';
+import { keywords, addop, mulop, relop, logicalAnd, logicalOr, logicalNot, assign, delimiters, whitespace } from './tokens.js';
 import { isLetter, isDigit, isInArray } from './utils.js';
 
 // Kiểm tra xem từ có phải là từ khóa không (được định nghĩa ở nơi khác)
@@ -57,8 +57,8 @@ const isLogicalOr = (token) => token === logicalOr;
 // Kiểm tra có phải là toán tử logic NOT không
 const isLogicalNot = (token) => token === logicalNot;
 
-// Kiểm tra có phải là toán tử không
-const isOperator = (token) => isInArray(token, operators);
+// Kiểm tra có phải là toán tử gán không
+const isAssign = (token) => isInArray(token, assign);
 
 // Kiểm tra có phải là dấu phân cách không
 const isDelimiter = (char) => isInArray(char, delimiters);
@@ -77,7 +77,7 @@ const classifyToken = (token) => {
     if (isLogicalAnd(token)) return { type: 'logicalAnd', value: token };     // Toán tử logic AND
     if (isLogicalOr(token)) return { type: 'logicalOr', value: token };       // Toán tử logic OR
     if (isLogicalNot(token)) return { type: 'logicalNot', value: token };     // Toán tử logic NOT
-    if (isOperator(token)) return { type: 'operator', value: token };         // Toán tử chung
+    if (isAssign(token)) return { type: 'assign', value: token };         // Toán tử gán
     if (isDelimiter(token)) return { type: 'delimiter', value: token };       // Dấu phân cách
     if (isWhitespace(token)) return { type: 'whitespace', value: token };     // Khoảng trắng
     return { type: 'error', value: token };  // Token không xác định
@@ -86,7 +86,7 @@ const classifyToken = (token) => {
 // Xuất các hàm để sử dụng ở các module khác
 export { 
     classifyToken, 
-    isOperator, 
+    isAssign, 
     isDelimiter, 
     isWhitespace, 
     isAddop, 

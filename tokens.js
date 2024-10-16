@@ -4,7 +4,7 @@ const keywords = [
     'void', 'int', 'for', 'while', 'if', 'else', 'return', 'break', 'continue', 'float'
 ];
 
-const operators = ['+', '-', '=', '==', '<', '>', '<=', '>=', '!='];
+const assign = ['='];
 const addop = ['+', '-'];
 const mulop = ['*', '/'];
 const relop = ['<', '>', '<=', '>=', '==', '!='];
@@ -16,7 +16,7 @@ const whitespace = [' ', '\t', '\n', '\r'];
 
 export {
     keywords,
-    operators,
+    assign,
     addop,
     mulop,
     relop,
