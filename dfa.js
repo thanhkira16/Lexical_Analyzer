@@ -21,28 +21,32 @@ const isNumber = (word) => {
     if (word.length === 0) return false; // Chuỗi rỗng không phải là số hợp lệ
     let dotFound = false;  // Kiểm tra dấu chấm thập phân
     let eFound = false;    // Kiểm tra ký hiệu 'e' cho ký hiệu khoa học
-
-    // Hàm kiểm tra ký tự có phải là số không
-    const isDigit = (char) => char >= '0' && char <= '9';
-
     for (let i = 0; i < word.length; i++) {
-        if (word[i] === '.') {
-            if (dotFound) return false;  // Chỉ cho phép một dấu chấm thập phân
+        const char = word[i];
+
+        if (char === '.') {
+            // Chỉ cho phép một dấu chấm thập phân và dấu chấm không thể đứng sau 'e'
+            if (dotFound || eFound) return false;
             dotFound = true;
-        } else if (word[i].toLowerCase() === 'e') {
-            if (eFound) return false;  // Chỉ cho phép một ký hiệu 'e'
+        } else if (char.toLowerCase() === 'e') {
+            // Chỉ cho phép một ký hiệu 'e' và phải có chữ số phía trước
+            if (eFound || i === 0 || !isDigit(word[i - 1])) return false;
             eFound = true;
-            // Xử lý dấu cộng hoặc trừ sau ký hiệu 'e' trong ký hiệu khoa học
+            eIndex = i; // Lưu vị trí của 'e'
+
+            // Xử lý dấu cộng hoặc trừ sau ký hiệu 'e'
             if (i + 1 < word.length && (word[i + 1] === '+' || word[i + 1] === '-')) {
-                i++; // Bỏ qua dấu '+' hoặc '-' ngay sau 'e'
-                if (i + 1 < word.length && !isDigit(word[i + 1])) {
-                    return false; // Nếu không có chữ số sau dấu '+' hoặc '-', không phải là số hợp lệ
-                }
+                i++;
             }
-        } else if (!isDigit(word[i])) {
-            return false;  // Nếu không phải là chữ số thì không phải là số hợp lệ
+
+            // Sau 'e' phải có ít nhất một chữ số
+            if (i + 1 >= word.length || !isDigit(word[i + 1])) return false;
+        } else if (!isDigit(char)) {
+            // Nếu không phải là chữ số, dấu chấm hoặc ký hiệu 'e', thì không hợp lệ
+            return false;
         }
     }
+
     return true;
 };
 

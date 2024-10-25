@@ -7,8 +7,7 @@ import {
     isRelop,          // Kiểm tra xem ký tự có phải là toán tử quan hệ không
     isLogicalAnd,     // Kiểm tra xem ký tự có phải là toán tử logic AND không
     isLogicalOr,      // Kiểm tra xem ký tự có phải là toán tử logic OR không
-    isLogicalNot,     // Kiểm tra xem ký tự có phải là toán tử logic NOT không
-    isNumber          // Kiểm tra xem ký tự có phải là số không
+    isLogicalNot      // Kiểm tra xem ký tự có phải là toán tử logic NOT không
 } from './dfa.js';
 
 // Hàm phân tách mã nguồn thành các token
@@ -105,21 +104,10 @@ const tokenize = (code) => {
                 addToken(currentToken);  // Thêm vào mảng
                 currentToken = '';       // Đặt lại token hiện tại
             }
-        }
-        // Nếu ký tự là số hoặc thuộc dạng số khoa học
+        } 
+        // Nếu không thuộc loại nào ở trên, tiếp tục ghép ký tự thành token
         else {
-            currentToken += char;  // Ghép các ký tự liên tiếp thành token
-            const nextChar = code[i + 1]; // Ký tự tiếp theo
-
-            // Nếu đã hết chuỗi hoặc ký tự tiếp theo không phải là một phần của số
-            if (!nextChar || isDelimiter(nextChar) || isWhitespace(nextChar)) {
-                if (isNumber(currentToken)) {  // Kiểm tra nếu token là số hợp lệ
-                    addToken(currentToken);   // Thêm token là số hợp lệ vào mảng
-                } else {
-                    addToken(currentToken);  // Xử lý như token thông thường
-                }
-                currentToken = ''; // Đặt lại token hiện tại
-            }
+            currentToken += char;  // Thêm ký tự vào token hiện tại
         }
     }
 
